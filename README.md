@@ -81,11 +81,11 @@ Sprawozdania to są pliki .tex znajdujące się w katalogu "chapters". Żeby stw
 ## Użyteczne polecenia LaTeX
 
 - Sekcje - używane przezemnie w postaci:
-```
-\section{sekcja}
-\subsection{subsekcja}
-\subsubsection{subsubsekcja}
-```
+  ```
+  \section{sekcja}
+  \subsection{subsekcja}
+  \subsubsection{subsubsekcja}
+  ```
 - Listy:
   - Unordered list
   ```
