@@ -1,0 +1,296 @@
+\chapter{Przykłady używania podstawowych elementów w~\LaTeX}
+\label{cha:elementyPracy}
+
+% ------------------------------------------------------------------------
+\section{Punktory i listy wyliczeniowe}
+
+Listy punktowane wyglądają następująco:
+\begin{itemize}
+    \item	First bullet;
+    \item	Second bullet;
+    \item	Third bullet.
+\end{itemize}
+
+Listy numerowane można dodawać w następujący sposób:
+\begin{enumerate}
+    \item	First item;
+    \item	Second item;
+    \item	Third item.
+\end{enumerate}
+
+Tekst jest kontynuowany tutaj.
+
+% ------------------------------------------------------------------------
+\section{Liczba}
+
+Pakiet \texttt{siunitx} zadba o to, by liczba została poprawnie sformatowana: \\
+\begin{center}
+    \num{1234567890.0987654321}
+\end{center}
+
+% ------------------------------------------------------------------------
+\section{Rysunki, tabele, schematy, wykresy}
+
+Wszystkie rysunki i tabele powinny być cytowane w tekście głównym jako \figurename~\ref{fig1}, \tablename~\ref{tab1} itd.
+W tekście najpierw pojawia się opis do rysunku/tabeli oraz odwołanie do elementu, a nastepnie rysunek bądź tabela. Rysunki, wykresy, schematy mają być w formacie *.eps, nazwy rysunków odpowiednio numerowane zgodnie z założeniem fig\_0001, fig\_0002 itd. Rysunki muszą być czytelne, dlatego należy zastosować wysoką jakość rysunków, które muszą być dostarczone w odpowiednio wysokiej rozdzielczości (min. 1000 pikseli szerokości/wysokości lub rozdzielczość 300 dpi lub wyższa). W celu przekonwertowania rysunków do pliku eps można użyć darmowego konwertera plików online ONLINE--CONVERT \url{https://www.online-convert.com/}. W przypadku gdy rysunek nie mieści się na danej stronie nalezy użyć polecenia \texttt{\textbackslash newpage} lub \texttt{\textbackslash clearpage} co pokazano w poniższym przykładzie.
+
+\noindent \textcolor{red}{\Large UWAGA!!!}
+
+Do wszystkich rysunków/tabel należy umieścić źródła tj. np. rysunki w postaci wektorowej, zestaw danych który był używany do wygenerowania wykresów itp. O szczegóły należy dopytać promotora pracy.
+
+
+Schematy można przygotowac z użyciem narzędzia diagrams.net/draw io w wersji online lub desktopowej \url{https://app.diagrams.net/} oraz w środowisku Microsoft Visio \url{https://www.microsoft.com/pl-pl/microsoft-365/visio/flowchart-software}.
+ 
+% ------------------------------------------------------------------------
+\subsection{Rysunki}
+
+W systemie zarządzania stadniną koni, dane będą przechowywane i zarządzane za pomocą relacyjnej bazy danych MySQL. Struktura bazy danych została zaprojektowana w taki sposób, aby umożliwić łatwe zarządzanie informacjami o koniach, rezerwacjach, klientach i trenerach. Baza danych składa się z kilku głównych tabel, takich jak: \texttt{horses}, \texttt{clients}, \texttt{trainers}, \texttt{reservations} oraz tabel pomocniczych: \texttt{horses\_breed}, \texttt{horses\_color}, \texttt{health\_status},\texttt{horse\_type}, które przechowują szczegółowe informacje o różnych aspektach zarządzania stadniną. Diagram ERD przedstawiono na \figurename~\ref{fig1}.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/fig_0001.eps}\\
+    \caption{Diagram ERD projektowanej aplikacji.\label{fig1}}
+\end{figure}
+
+\newpage
+Pakiet \texttt{subcaption} pozwala na umieszczanie w podpisie rysunku odnośników do ,,podilustracji'':
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{figures/ur.jpg}
+        \subcaption{\label{subfigure_a}}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\linewidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{figures/ur.jpg}
+        \subcaption{\label{subfigure_b}}
+    \end{subfigure}
+    \caption{Przykład użycia \texttt{\textbackslash subcaption}: \protect\subref{subfigure_a} litera A, \protect\subref{subfigure_b} litera B. \label{fig:subcaption_example}}
+\end{figure}
+
+% ------------------------------------------------------------------------
+\subsection{Tabele}
+
+
+Poniżej przykład tworzenia tabeli patrz \tablename~\ref{tab1} i \tablename~\ref{tab2}.
+
+\begin{table}[H]
+    \centering
+    \caption{To jest tytuł tabeli.\label{tab1}}
+    \renewcommand{\tabularxcolumn}[1]{m{#1}}  % Dostosowanie kolumny do zawartości
+    \newcolumntype{C}{>{\centering\arraybackslash}X}
+    \begin{tabularx}{\linewidth}{CCCCC}
+        \toprule
+        \textbf{Name}              & \textbf{Type}              & \textbf{Activations}        & \multicolumn{2}{c}{\textbf{Learnables}}               \\
+        \midrule
+        \multirow[m]{1}{*}{Name 1} & Type 1                     & 232                         & \multicolumn{2}{c}{--}                                \\
+        \midrule
+        \multirow[m]{3}{*}{Name 2} & \multirow[m]{3}{*}{Type 1} & \multirow[m]{3}{*}{512}     & InputWeights                            & 2048x232    \\
+                                   &                            &                             & RecurrentWeights                        & 2048x512    \\
+                                   &                            &                             & Bias                                    & 2048x1      \\
+        \midrule
+        \multirow[m]{2}{*}{Name 3} & \multirow[m]{2}{*}{Type 1} & \multirow[m]{2}{*}{8/16/32} & Weights                                 & 8/16/32x512 \\
+                                   &                            &                             & Bias                                    & 8/16/32x32  \\
+        \midrule
+        \multirow[m]{1}{*}{Name 4} & Type 1                     & 8/16/32                     & \multicolumn{2}{c}{--}                                \\
+        \midrule
+        \multirow[m]{1}{*}{Name 5} & Type 1                     & 8/16/32                     & \multicolumn{2}{c}{--}                                \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+
+% \newcolumntype{C}{>{\centering\arraybackslash}X}
+% C: nazwa nowego typu kolumny, który definiujesz. Możesz używać tej nazwy w środowisku tabularx do określenia kolumny, która ma stosować ten nowy format.
+% {\centering\arraybackslash}: predefiniowany format kolumny.
+% \centering zapewnia, że tekst w kolumnie będzie wyśrodkowany.
+% \arraybackslash umożliwia używanie \\ do łamania linii w obrębie kolumny. Jest to ważne, ponieważ domyślnie w środowisku tabular można używać \\ tylko w kontekście wierszy, ale nie w kontekście komórek. \arraybackslash umożliwia jego użycie w komórkach kolumny.
+% X: Jest to typ kolumny dostarczany przez pakiet tabularx. Kolumna typu X rozciąga się automatycznie, aby wypełnić dostępną szerokość tabeli. Możesz używać X do tworzenia elastycznych kolumn, które automatycznie dostosowują swoją szerokość w zależności od dostępnego miejsca.
+
+
+\begin{table}[H]
+    \caption{Klasy trajektorii zadań}
+    \label{tab2}
+    \centering
+    \begin{tabular}{ccc}
+        \toprule
+        \textbf{Lp} & \textbf{UAV}  & \textbf{Czas $\left [ s \right ]$} \\ \toprule
+        1           & 36 $\times$ 6 & 8778                               \\
+        2           & 36 $\times$ 6 & 8743                               \\
+        3           & 36 $\times$ 6 & 8765                               \\
+        4           & 36 $\times$ 6 & 8882                               \\
+        5           & 36 $\times$ 6 & 8750                               \\
+        6           & 36 $\times$ 6 & \textcolor{red}{8965}              \\
+        7           & 36 $\times$ 6 & \textcolor{blue}{8727}             \\
+        8           & 36 $\times$ 6 & 8937                               \\
+        9           & 36 $\times$ 6 & 8750                               \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+
+% ------------------------------------------------------------------------
+\section{Wzory matematyczne}
+
+Kryterium $Q$ jest separowalne dla procesu $P$, jeżeli dla każdej sekwencji decyzyjnej $\tilde{u} \in U$ można w~rekurencyjny sposób wyznaczyć:
+
+\begin{equation}
+    \label{eq:0001}
+    Q_{0}= const\; \text{w szczegolności gdy}\; Q_{0}=0
+\end{equation}
+
+\begin{equation}
+    \label{eq:0002}
+    Q_{i+1}= f_{Q}\left ( Q_{i},u_{i},s{i}\right ) \; \text{dla} \; i=0,1,\dots, d\left ( \tilde{s}-1 \right )
+\end{equation}
+
+\noindent gdzie: $Q_{i}$ dla $f>0$ opisuje wartość kryterium $Q$ wyznaczonego dla tego stanu w~rozpatrywanej trajektorii $Q_{i}=Q\left ( {\tilde{u}}' \right )$, gdzie ${\tilde{u}}' = \left (u_{0},u_{1},\dots,u_{i-1}  \right )$ jest początkową częścią zbioru ${\tilde{u}}'$. Funkcją $f_{Q}:\Re \times U \times S \rightarrow \Re$ jest częściową funkcją, taką że:
+
+\begin{equation}
+    \label{eq:0003}
+    Dom\;f_{Q}=\left \{ \left ( a,u,s \right ) \it \Re \times U \times S: s \in S^{P},\; u \in U_{p}, \; a \in \Re \right \}
+\end{equation}
+
+Poniżej zamieszczono przykład umieszczenia długich wzorów w pracy. Zbiór stanów niedopuszczalnych:
+
+\begin{equation}
+    \begin{aligned}
+        S_{N} = \left\{ \left( x,t \right): \left( J_{M}\left( x,t \right) \cap J_{out} \neq 0 \wedge F^{r} < t < B^{r+1}, \; 1 \leqslant r \leqslant ILs-1 \right) \right. \\
+        \left. \cup \left( \underset{j \in J_{out} }{\exists} j \notin x^{0} \wedge t > F^{ILs} \right) \cup \left( \underset{j \in J_{baz} }{\exists} j \notin x^{0} \wedge t > T_{max} \right) \right\}
+    \end{aligned}
+    \label{eq:0028}
+\end{equation}
+
+\noindent gdzie $T_{max}$ -- przyjęty czas zakończenia wszystkich zadań w~danym dniu.
+
+Czasem zachodzi potrzeba wytłumaczenia znaczenia symboli użytych w równaniu. Można to zrobić z użyciem zdefiniowanego na potrzeby niniejszej klasy środowiska \texttt{eqwhere}.
+
+\begin{equation}
+    E = mc^2
+\end{equation}
+gdzie
+\begin{eqwhere}[2cm]
+    \item[$m$] masa
+    \item[$c$] prędkość światła w próżni
+\end{eqwhere}
+
+Odległość półpauzy od lewego marginesu należy dobrać pod kątem najdłuższego symbolu (bądź listy symboli) poprzez odpowiednie ustawienie parametru tego środowiska (domyślnie: 2 cm).
+
+\section{Code Listing}
+
+Kod jest zwykle przechowywany w pliku źródłowym, dlatego polecenie, które automatycznie pobiera kod z pliku, staje się bardzo przydatne. W pracy należy umieszczać kody źródłowe które przechowywane będą w katalogu \texttt{src} w oddzielnych plikach z odpowiedniem rozszerzeniem np. \texttt{*.m, *.cpp, *.css, *.py, *.html, *.css} itp. Poniżej przedstawiono przykład jak dodawać kod źródłowy z pliku, więcej informacji można znaleść w dokumentacji Code listing \LaTeX  \url{https://www.overleaf.com/learn/latex/Code_listing}.
+
+Algorytm Euklidesa służy do wyznaczania największego wspólnego dzielnika dwóch liczb całkowitych. Największy wspólny dzielnik dwóch liczb a i  b, to taka liczba, która dzieli te liczby bez reszty i jest ona możliwie największa. Można go zastosować do skracania ułamków lub wyznaczenia najmniejszej wspólnej wielokrotności NWW. Artykuł opisuje dwie postacie algorytmu: nieoptymalną i optymalną.
+
+\begin{itemize}
+    \item Niezoptymalizowany algorytm Euklidesa -- sposób rozwiązania jest następujący: wybieramy większą z dwóch liczb i zamieniamy ją na różnicę większej i mniejszej. Czynność tą powtarzamy do momentu uzyskania dwóch takich samych wartości. Warto zaznaczyć, że ten algorytm jest bardzo niewydajny. Gdy dobierzemy odpowiednio liczby, to ilość operacji znacznie się zwiększy.
+    \item Zoptymalizowany algorytm Euklidesa -- w przypadku optymalnego rozwiązania NWD postępujemy następująco: załóżmy, że wyznaczamy NWD dwóch liczb naturalnych a i b. W każdym przejściu pętli wykonujemy dwie operacje: $a = b$ oraz $b = a \; mod \; b$. Czynności te powtarzamy do momentu, gdy zmienna $b$ osiągnie wartość zero. Zmienna $a$ będzie przechowywać wtedy największy wspólny dzielnik liczb podanych na wejściu.
+\end{itemize}
+
+Przykłądowa implementacja algorytmu NWD w wersji rekurencyjnej dla powyższych wersji algorytmu przedstiono na \listingname~\ref{nwdVer1} i ~\ref{nwdVer2}.
+
+\lstinputlisting[style = stylePython, caption= Niezoptymalizowany algorytm NWD wersja rekurencyjna, label=nwdVer1]{src/nwdRekVer1.py}
+
+
+\lstinputlisting[style = stylePython, caption= Zoptymalizowany algorytm NWD wersja rekurencyjna, label=nwdVer2]{src/nwdRekVer2.py}
+
+
+\subsection{Style i kolory kodu}
+
+Formatowanie kodu w pakiecie listingowym jest wysoce konfigurowalne. W przypadku gdy chcemy aby kod wstawiany za pomocą listings w \LaTeX był kolorowy, należy skonfigurować styl, który umożliwi kolorowanie składni. Do tego potrzebna jest paczka \texttt{xcolor}, która pozwala na definiowanie kolorów. Poniżej kroki, jak to zrobić:
+
+\begin{itemize}
+    \item W preambule dodaj odpowiednie paczki: \texttt{\textbackslash
+              usepackage{listings},\textbackslash usepackage{xcolor}}.
+    \item Następnie zdefiniuj styl dla kodu źródłowego. Na przykład, dla języka Python może wyglądać nastepująco:
+          \small \begin{verbatim}
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{green},          % Kolor komentarzy
+    keywordstyle=\color{blue},           % Kolor słów kluczowych
+    numberstyle=\tiny\color{gray},       % Kolor i styl numerów linii
+    stringstyle=\color{red},             % Kolor ciągów znaków
+    basicstyle=\ttfamily\footnotesize,   % Podstawowy styl kodu
+    breakatwhitespace=false,             % Automatyczne dzielenie wierszy
+    breaklines=true,                     % Dzielenie długich linii
+    keepspaces=true,                     % Zachowanie spacji
+    numbers=left,                        % Numery linii po lewej
+    numbersep=5pt,                       % Odstęp numerów od kodu
+    showspaces=false,                    % Nie pokazuj spacji
+    showstringspaces=false,              % Nie pokazuj spacji 
+                                         % w ciągach znaków
+    showtabs=false,                      % Nie pokazuj tabulacji
+    tabsize=2                            % Rozmiar tabulacji
+}
+    \end{verbatim}
+
+    \item Aby użyć tego stylu w kodzie, dodaj do lstinputlisting argument style=mystyle. Cała komenda będzie wyglądać tak:
+          \begin{verbatim}
+\lstinputlisting[caption=Algorytm NWD, style=mystyle]
+{src/nwdRedVer1.py}
+    \end{verbatim}
+    \item Możesz też dostosować kolory według własnych preferencji, korzystając z paczki xcolor i np. definiując własne kolory:
+          \begin{verbatim}
+    \definecolor{lightgray}{rgb}{0.9,0.9,0.9}
+    \definecolor{blue}{rgb}{0,0,1}
+    \definecolor{green}{rgb}{0,0.6,0}
+    \definecolor{red}{rgb}{0.6,0,0}
+    \definecolor{gray}{rgb}{0.5,0.5,0.5}
+    \end{verbatim}
+\end{itemize}
+
+
+Na \listingname~\ref{nwdVer1a} przedstawiono uzyskany wynik użycia zdefiniowane powyżej stylu.
+
+\lstinputlisting[caption= Niezoptymalizowany algorytm NWD wersja rekurencyjna, label=nwdVer1a,  style = stylePython ]{src/nwdRekVer1.py}
+
+Na \listingname~\ref{JavaListing} przedstawiono przykładowy listing w JAVA.
+
+\lstinputlisting[caption= Przykładowy listing w JAVA, label=JavaListing, style = javaStyle]{src/Task1.java}
+
+Na \listingname~\ref{csharpExample} przedstawiono przykładowy listing w C\#.
+
+\lstinputlisting[caption= Przykładowy listing w C\#, label=csharpExample, style = csStyle]{src/Program.cs}
+
+
+
+\section{Cytowania literatury}
+
+W LaTeX-u, \texttt{\textbackslash cite} jest używane do cytowania źródeł z bibliografii. Cytowanie w LaTeX-u wymaga użycia systemu bibliograficznego, który może być oparty na pakiecie bibtex lub biblatex. Oto jak można używać \texttt{\textbackslash cite} w różnych kontekstach:
+
+Przygotowanie pliku bibliograficznego - stwórz plik .bib (np. bibliografia.bib) z wpisami bibliograficznymi. Każdy wpis powinien być sformatowany zgodnie z wymaganiami BibTeX. Przykład wpisu:
+\begin{verbatim}
+        @article{smith2020,
+          author = {John Smith},
+          title = {A Great Paper},
+          journal = {Journal of Great Papers},
+          year = {2020},
+          volume = {5},
+          number = {3},
+          pages = {123-456}
+        }
+        \end{verbatim}
+
+W pliku .tex załaduj pakiet natbib (opcjonalnie) i użyj \texttt{\textbackslash cite}:
+
+\begin{verbatim}
+    \documentclass{article}
+    \usepackage[numbers]{natbib} % Można również użyć [authoryear] lub innych opcji
+
+    \begin{document}
+
+    Here is a citation \cite{smith2020}.
+
+    \bibliographystyle{plain} % Wybierz odpowiedni styl bibliografii
+    \bibliography{bibliografia} % Plik bibliograficzny (bez rozszerzenia .bib)
+
+    \end{document}
+
+\end{verbatim}
+
+
+
+W pracy można cytować literaturę pojednyńco zgodnie z zapisem:~\cite{ARM06}. Cytowanie kliku źródeł:~\cite{ARM06,BuDo03,BuDoVa03,PeDa04}. Kolejny przykład użycia cytownia~\cite{Dil00,Lam92}. Przykład cytowania źródła internetowego~\cite{example2024}.
+
+% ------------------------------------------------------------------------
