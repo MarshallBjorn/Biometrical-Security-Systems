@@ -17,7 +17,7 @@ hold off
 % ==========================================================================
 % Na podstawie kodu powyżej zliczyć monety w zbiorach monety1-4.jpg :)
 % ==========================================================================
-A = imread('monety2.jpg');
+A = imread('monety4.jpg');
 A= A(380:1262,711:1657);
 A= imresize(A,0.5);
 imshow(A>55)
@@ -37,6 +37,7 @@ viscircles(srodki(najmn_moneta,:), promienie(najmn_moneta) ,'Color','y'); %Wizua
 hold on
 title(['Zliczanie monet w obrazie. Liczba monet to: ' num2str(length(srodki))]);
 hold off
+
 end
 % Mile widziany fragment zliczający sumę nominałów monet :)
 % return
@@ -45,7 +46,7 @@ end
 % Szacowanie złożoności obliczeniowej
 % ==========================================================================
 start= tic;
-im = imread('monety2.jpg');
+im = imread('monety4.jpg');
 A=im;
 A= (A(:,:,1)+A(:,:,2)+A(:,:,3))./3;
 e = edge(A, 'canny', 0.6);
@@ -60,3 +61,5 @@ plot(x+peak(1), y+peak(2), 'g-');
 end
 hold off
 stop= toc(start);
+
+exportgraphics(gcf, 'zad2result2.png', 'Resolution', 300);

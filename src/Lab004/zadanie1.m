@@ -2,7 +2,7 @@
 %w zadaniu wyodrębniania pola tęczówki
 %==========================================================================
 clear all, close all, clc
-oko = imread('oko2.jpg'); %lub oko1
+oko = imread('oko1.jpg'); %lub oko1
 oko= mat2gray(oko);
 imshow(oko)
 
@@ -21,6 +21,8 @@ viscircles(srodki_c, promienie_c,'LineStyle','--'); %Wizualizacja okręgów
 hold on
 title('Wykrywanie okręgów w obrazie');
 hold off
+
+exportgraphics(gcf, 'results.png', 'Resolution', 300);
 
 % parametry normalizacji
 promien_rozdz = 90;

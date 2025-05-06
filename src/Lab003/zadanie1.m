@@ -58,7 +58,6 @@ J_modified = thinning(I, s_mod, m_mod);
 
 %% 5. Szkieletyzacja Chin-Wan-Stover-Iverson
 
-% Definicja kerneli według Twojej tabelki
 % (przekształcenie na binarne maski)
 s_cwsi = [0 1 1 0 0 1 0 0 1 1];
 m_cwsi = [0 1 1 0 0 1 0 0 1 1];

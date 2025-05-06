@@ -37,29 +37,206 @@ oka.
 
 \section{Wstęp teoretyczny}
 
+\subsection{Transformata Hougha}
+
+Transformata Hougha to technika analizy obrazu wykorzystywana do wykrywania prostych, okręgów oraz innych kształtów w obrazach cyfrowych. Polega na przekształceniu punktów z przestrzeni obrazu do tzw. przestrzeni parametrów, gdzie wykrywane są lokalne maksima odpowiadające obecności określonych kształtów.
+
+\subsubsection{Transformata Hougha – wersja liniowa}
+
+W przypadku wykrywania prostych, transformata Hougha przekształca punkt $(x, y)$ z przestrzeni kartezjańskiej na krzywą w przestrzeni parametrów $(\rho, \theta)$. Wykorzystuje się do tego normalną postać równania prostej:
+
+\begin{equation}
+	\rho = x \cdot \cos(\theta) + y \cdot \sin(\theta),
+\end{equation}
+
+gdzie:
+\begin{itemize}
+	\item $\rho$ – odległość prostej od początku układu współrzędnych,
+	\item $\theta$ – kąt między osią $x$ a normalną do prostej.
+\end{itemize}
+
+Każdy punkt z obrazu generuje w przestrzeni parametrów sinusoidę. Jeżeli kilka punktów leży na tej samej prostej, ich odpowiadające sinusoidy przecinają się w jednym punkcie – odpowiadającym parametrom tej prostej.
+
+Aby odwzorować wszystkie możliwe proste, tworzy się macierz akumulatorową, w której zliczane są głosy (inkrementacje) za danymi parametrami $(\rho, \theta)$. Miejsca o największej liczbie głosów odpowiadają wykrytym prostym.
+
+Alternatywnie można stosować prostszą, choć mniej stabilną numerycznie formę liniową:
+
+\begin{equation}
+	y = ax + b,
+\end{equation}
+
+którą przekształca się do:
+
+\begin{equation}
+	b = -ax + y.
+\end{equation}
+
+W przestrzeni $(a, b)$ każdemu punktowi z obrazu odpowiada linia prosta. Przecięcia tych prostych w jednym punkcie oznaczają wspólne parametry linii przechodzącej przez te punkty.
+
+\subsubsection*{Algorytm detekcji linii – etapy:}
+\begin{enumerate}
+	\item Przekształcenie obrazu do postaci binarnej.
+	\item Utworzenie macierzy akumulatorowej $(\rho, \theta)$.
+	\item Iteracja po wszystkich punktach krawędziowych i zliczanie głosów.
+	\item Wyszukiwanie lokalnych maksimów w akumulatorze.
+	\item Odwzorowanie wykrytych linii na obraz.
+\end{enumerate}
+
+\subsubsection{Transformata Hougha – wersja kołowa}
+
+Transformata Hougha może być również używana do detekcji okręgów. Równanie okręgu na płaszczyźnie opisuje się wzorem:
+
+\begin{equation}
+	(x - a)^2 + (y - b)^2 = r^2,
+\end{equation}
+
+gdzie:
+\begin{itemize}
+	\item $(a, b)$ – współrzędne środka okręgu,
+	\item $r$ – promień okręgu.
+\end{itemize}
+
+W tym przypadku przestrzeń parametrów jest trójwymiarowa: $(a, b, r)$. Każdy punkt z krawędzi obrazu może należeć do wielu potencjalnych okręgów, dlatego głosuje się dla wszystkich możliwych kombinacji $(a, b, r)$ spełniających równanie okręgu.
+
+Obliczenie współrzędnych środka okręgu dla ustalonego promienia $r$ można przeprowadzić według wzorów:
+
+\begin{align}
+	a &= x - r \cdot \cos(\theta), \\
+	b &= y - r \cdot \sin(\theta).
+\end{align}
+
+\subsubsection*{Algorytm detekcji okręgów – etapy:}
+\begin{enumerate}
+	\item Wstępne przetwarzanie obrazu: konwersja do skali szarości, filtr Canny’ego, filtr Gaussa (opcjonalnie).
+	\item Inicjalizacja trójwymiarowego akumulatora $(a, b, r)$.
+	\item Iteracja po punktach krawędzi i promieniach, zliczanie głosów.
+	\item Wyszukiwanie lokalnych maksimów w akumulatorze.
+	\item Rysowanie wykrytych okręgów na obrazie.
+\end{enumerate}
+
+\subsubsection*{Złożoność i optymalizacja}
+Transformata Hougha dla okręgów jest bardziej złożona obliczeniowo niż wersja liniowa, ponieważ wymaga analizowania trójwymiarowej przestrzeni parametrów. W celu optymalizacji stosuje się:
+\begin{itemize}
+	\item ograniczenie zakresu promieni $r \in [r_{\text{min}}, r_{\text{max}}]$,
+	\item metody probabilistyczne (np. Randomized Hough Transform),
+	\item wykorzystanie gradientu przyspieszającego głosowanie.
+\end{itemize}
+
+
 \section{Opis wykorzystywanego oprogramowania i narzędzi}
+
+W realizacji zadania wykorzystano szereg funkcji dostępnych w środowisku \texttt{MATLAB}, które są szczególnie przydatne w analizie obrazów oraz implementacji transformaty Hougha:
+
+\begin{itemize}
+	\item \texttt{hough(BW)} – wykonuje transformatę Hougha dla obrazu binarnego \texttt{BW}. Funkcja zwraca macierz akumulatora parametrów $\rho$ i $\theta$.
+	
+	\item \texttt{houghpeaks(H, N)} – znajduje lokalne maksima w macierzy akumulatora \texttt{H}. Argument \texttt{N} określa liczbę wykrywanych maksimów. Funkcja zwraca współrzędne punktów odpowiadających wykrytym liniom.
+	
+	\item \texttt{houghlines(BW, $\theta$, $\rho$, peaks)} – rekonstruuje linie na podstawie obrazu binarnego \texttt{BW}, parametrów \texttt{$\theta$} i \texttt{$\rho$} oraz wykrytych maksimów \texttt{peaks}.
+	
+	\item \texttt{imfindcircles(I, [$r_{min}$, $r_{max}$])} – wykrywa okręgi w obrazie \texttt{I} o promieniach z podanego zakresu. Zwraca współrzędne środków oraz promienie wykrytych okręgów.
+	
+	\item \texttt{viscircles(centers, radii)} – rysuje okręgi o środkach \texttt{centers} i promieniach \texttt{radii} na obrazie. Funkcja pomocna przy wizualizacji wyników.
+\end{itemize}
 
 \section{Zadania do wykonania samodzielnego}
 
-\subsection{Zadanie1 }
+\subsection{Zadanie1}
 
 \subsubsection{Treść}
 
+\textbf{Wykrywanie i normalizacja tęczówki oka przy użyciu transformacji Hougha}
+
+Zaproponuj implementację algorytmu wykrywania tęczówki w obrazie oka przy wykorzystaniu
+transformacji Hougha w wersji kołowej. Następnie należy przeprowadzić normalizację wykrytej
+tęczówki poprzez przekształcenie jej do współrzędnych biegunowych.
+W tym celu należy:
+
+\begin{enumerate}
+	\item Wczytać obraz oka i jeżeli jest to konieczne zmienić go do skali szarości tzw. gray level.
+	\item Przeprowadzić wykrywanie krawędzi: w tym celu zastosuj operator Canny'ego do wykrycia
+	krawędzi. Dostosuj próg detekcji krawędzi, aby uzyskać możliwie wyraźne kontury.
+	\item Wykonać wykrywanie okręgów metodą Hougha: w tym celu wykorzystaj funkcję
+	imfindcircles do wykrycia granicy między twardówką a tęczówką (większy okrąg), granicy
+	między tęczówką a źrenicą (mniejszy okrąg). Ustaw odpowiednie zakresy promieni dla obu
+	okręgów oraz zwizualizuj wykryte okręgi na obrazie.
+	\item Przeprowadzić transformację wyznaczonego pola tęczówki do postaci macierzowej: w tym celu
+	przeprowadź przekształcenie wykrytej tęczówki do współrzędnych biegunowych. Ustaw
+	odpowiednie parametry dla tej transformacji (promień podziału, zakres kąta). Zwizualizuj
+	przekształcony obraz w nowych współrzędnych biegunowych.
+	\item Dokonać wizualizacji wyników: w tym celu wyświetl wykryte okręgi na oryginalnym obrazie oraz wyświetl obraz tęczówki w układzie biegunowym.
+\end{enumerate}
 
 \subsubsection{Przykładowy program}
 
+\lstinputlisting[style= matlabStyle, caption= Algorytm wykrywania rógówki i tęczówki oka, label=Lab004_l1]{src/Lab004/zadanie1.m}
+
 \subsubsection{Obrazy}
 
-\section{Wnioski}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{src/Lab004/results1.png}
+		\label{fig:lab4_eye1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{src/Lab004/results2.png}
+		\label{fig:lab4_eye2}
+	\end{subfigure}
+	\caption{Wykrywanie okręgów tęczówki i rogówki oka.}
+\end{figure}
 
-\subsection{Zadanie X}
+\subsection{Zadanie 2}
 
 \subsubsection{Treść}
 
+\textbf{Automatyczne zliczanie monet na obrazie z wykorzystaniem transformacji Hougha}
+
+Celem zadania jest automatyczne wykrycie, zliczenie oraz określenie nominałów monet na obrazie
+wejściowym za pomocą transformacji Hougha dla okręgów. Należy także oszacować złożoność
+obliczeniową metody oraz przetestować ją na różnych zbiorach obrazów. Zapoznaj się z poniższym
+kodem i zaproponuj brakujące rozwiązania.
+
 \subsubsection{Przykładowy program}
+
+\lstinputlisting[style= matlabStyle, caption= Algorytm zliczania monet na obrazie, label=Lab004_l2]{src/Lab004/zadanie2.m}
 
 \subsubsection{Obrazy}
 
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{src/Lab004/zad2result1.png}
+		\label{fig:lab4_monets1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{src/Lab004/zad2result2.png}
+		\label{fig:lab4_monets2}
+	\end{subfigure}
+	\caption{Wykrywanie okręgów monet różnych nominałów.}
+\end{figure}
+
 \section{Wnioski}
 
-Na podstawie przeprowadzonych eksperymentów można stwierdzić, że:
+Na podstawie przeprowadzonego eksperymentu z wykorzystaniem transformaty Hougha można wyciągnąć następujące wnioski:
+
+\begin{itemize}
+	\item Transformata Hougha jest skutecznym narzędziem do wykrywania prostych w obrazie, nawet w przypadku obecności szumów lub fragmentarycznych krawędzi.
+	\item Jakość wykrywania linii zależy istotnie od uprzedniego przetworzenia obrazu – w szczególności od jakości detekcji krawędzi (np. metodą Canny'ego).
+	\item Funkcje \texttt{hough}, \texttt{houghpeaks} oraz \texttt{houghlines} pozwalają w pełni zautomatyzować proces wykrywania i wizualizacji prostych w obrazie binarnym.
+	\item Wybór liczby maksymalnych wartości w akumulatorze (\texttt{houghpeaks}) ma wpływ na liczbę wykrytych linii – zbyt niski próg może pominąć istotne linie, natomiast zbyt wysoki może uwzględnić szumy.
+\end{itemize}
+
+W przypadku wykrywania kształtów kołowych transformata Hougha również okazała się bardzo przydatna. Wnioski z zadania są następujące:
+\begin{itemize}
+	\item Funkcja \texttt{imfindcircles} pozwala skutecznie wykrywać okręgi o zadanym zakresie promieni, nawet przy obecności zakłóceń.
+	\item Dokładność wykrycia zależy od odpowiedniego doboru zakresu promieni – zbyt szeroki zakres może powodować fałszywe detekcje, a zbyt wąski może pomijać część obiektów.
+	\item Wizualizacja za pomocą \texttt{viscircles} pozwala na łatwe i czytelne przedstawienie wyników detekcji.
+	\item Metoda ta może być wykorzystywana w praktycznych zastosowaniach, takich jak wykrywanie monet, komórek, znaków drogowych czy obiektów okrągłych w systemach wizyjnych.
+\end{itemize}
